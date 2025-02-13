@@ -5,6 +5,7 @@ import pando.pando as pando
 import royal_caribbean.rc as rc
 import princess.princess as princess
 import azamara.azamara as azamara
+import celebrity.celebrity as celebrity
 import json
 import os
 from datetime import datetime
@@ -42,6 +43,12 @@ def get_azamara():
     print(f"[!] Found {len(cruises)} cruises")
     return cruises
 
+def get_celebrity():
+    print("[!] Getting Celebrity Cruises")
+    cruises = celebrity.get_cruises()
+    print(f"[!] Found {len(cruises)} cruises")
+    return cruises
+
 if __name__ == '__main__':
     print("[!] Starting to scrape cruises")
     cruises = []
@@ -51,6 +58,7 @@ if __name__ == '__main__':
     carnival_cruises = get_carnival()
     princess_cruises = get_princess()
     azamara_cruises = get_azamara()
+    celebrity_cruises = get_celebrity()
     
     for i in royal_caribbean:
         if i['price'] > 0:
@@ -67,10 +75,12 @@ if __name__ == '__main__':
     for i in azamara_cruises:
        if i['price'] > 0:
            cruises.append(i)
+    for i in celebrity_cruises:
+        if i['price'] > 0:
+            cruises.append(i)
 
     cruises.sort(key=lambda cruise: cruise["price_per_night"], reverse=False)
     date = datetime.now().strftime("%Y_%m_%d")
     with open(f"{DIR}/cruises_{date}.json", "w") as f:
         print(f"[!] Dumping {len(cruises)} cruises to a {DIR}/cruises_{date}.json")
         f.write(json.dumps(cruises, indent=2))
-        print()
