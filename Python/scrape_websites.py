@@ -57,7 +57,7 @@ if __name__ == '__main__':
     po_cruises = get_pando()
     carnival_cruises = get_carnival()
     princess_cruises = get_princess()
-    azamara_cruises = get_azamara()
+    # azamara_cruises = get_azamara()
     celebrity_cruises = get_celebrity()
     
     for i in royal_caribbean:
@@ -72,9 +72,9 @@ if __name__ == '__main__':
     for i in princess_cruises:
         if i['price'] > 0:
             cruises.append(i)
-    for i in azamara_cruises:
-       if i['price'] > 0:
-           cruises.append(i)
+    # for i in azamara_cruises:
+    #    if i['price'] > 0:
+    #        cruises.append(i)
     for i in celebrity_cruises:
         if i['price'] > 0:
             cruises.append(i)
@@ -83,4 +83,4 @@ if __name__ == '__main__':
     date = datetime.now().strftime("%Y_%m_%d")
     with open(f"{DIR}/cruises_{date}.json", "w") as f:
         print(f"[!] Dumping {len(cruises)} cruises to a {DIR}/cruises_{date}.json")
-        f.write(json.dumps(cruises, indent=2))
+        json.dump(cruises, f, indent=2)
