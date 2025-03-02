@@ -1,5 +1,7 @@
 import requests
 import json
+import os
+from datetime import datetime
 import time
 import uuid
 
@@ -63,7 +65,7 @@ def fetch_all_cruises():
             cruises = data.get('data', {}).get('cruiseSearch', {}).get('results', {}).get('cruises', [])
         except AttributeError:
             print(json.dumps(data, indent=2, sort_keys=True))
-            return sorted(scraped_cruises, key=lambda x: x['price_per_night'], reverse=True)
+            return sorted(scraped_cruises, key=lambda x: x['price_per_night'])
 
 
         for sailing in cruises:
@@ -97,7 +99,7 @@ def fetch_all_cruises():
         # Optional delay to avoid hitting server too quickly
         time.sleep(1)
 
-    return sorted(scraped_cruises, key=lambda x: x['price_per_night'], reverse=True)
+    return sorted(scraped_cruises, key=lambda x: x['price_per_night'])
 
 
 
@@ -105,6 +107,10 @@ def fetch_all_cruises():
 if __name__ == '__main__':
     cruises = fetch_all_cruises()
     print(f"Fetched {len(cruises)} cruises.")
-    for cruise in cruises:
-        print(f"[{cruise['date']}]: {cruise['dep']} to {cruise['title']} on the {cruise['ship']} for {cruise['nights']} nights. ${cruise['price']} ({cruise['price_per_night']} p/n)")
+    
+    DIR = os.path.dirname(os.path.realpath(__file__))
 
+    date = datetime.now().strftime("%Y_%m_%d")
+    with open(f"{DIR}/cruises_{date}.json", "w") as f:
+        print(f"[!] Dumping {len(cruises)} cruises to a {DIR}/cruises_{date}.json")
+        json.dump(cruises, f, indent=2)

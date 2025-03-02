@@ -1,5 +1,7 @@
 import requests
 import json
+import os
+from datetime import datetime
 
 def fetch_json(url):
     """
@@ -76,7 +78,7 @@ def get_cruises(url=None):
                     "price_per_night": price_per_night
                 })
 
-    return sorted(cruise_list, key=lambda x: x['price_per_night'], reverse=True)
+    return sorted(cruise_list, key=lambda x: x['price_per_night'])
 
 
 
@@ -84,5 +86,10 @@ if __name__ == "__main__":
     URL = 'https://www.azamara.com/api/1/services/search/get-all-cruises-cached.json'
 
     cruises = get_cruises(URL)
-    for cruise in cruises:
-        print(f"[{cruise['date']}]: {cruise['title']} on the {cruise['ship']}. ${cruise['price']} ({cruise['price_per_night']} p/n)")
+    DIR = os.path.dirname(os.path.realpath(__file__))
+
+    date = datetime.now().strftime("%Y_%m_%d")
+
+    with open(f"{DIR}/cruises_{date}.json", "w") as f:
+        print(f"[!] Dumping {len(cruises)} cruises to a {DIR}/cruises_{date}.json")
+        json.dump(cruises, f, indent=2)

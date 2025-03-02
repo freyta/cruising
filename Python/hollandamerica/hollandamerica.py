@@ -3,8 +3,6 @@ import os
 import json
 from datetime import datetime
 
-DIR = os.path.dirname(os.path.realpath(__file__))
-
 def get_promos(cruise_id, promo_json):
     promo = []
     if cruise_id in promo_json:

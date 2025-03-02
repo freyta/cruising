@@ -1,7 +1,9 @@
 import requests
 from .mappings import SHIP_MAPPING, PORT_MAPPING
-import os
 import uuid
+import os
+import json
+from datetime import datetime
 
 
 
@@ -78,7 +80,7 @@ def process_cruises(princess_products, cruise_codes):
                     "obc": details['cheapest_price'][1]
                     })
 
-    return sorted(scraped_cruises, key=lambda x: x['price_per_night'], reverse=True)
+    return sorted(scraped_cruises, key=lambda x: x['price_per_night'])
 
 
 def get_cruises():
@@ -236,3 +238,10 @@ def get_cruises():
 
 if __name__ == "__main__":
     get_cruises()
+    DIR = os.path.dirname(os.path.realpath(__file__))
+
+    date = datetime.now().strftime("%Y_%m_%d")
+
+    with open(f"{DIR}/cruises_{date}.json", "w") as f:
+        print(f"[!] Dumping {len(cruises)} cruises to a {DIR}/cruises_{date}.json")
+        json.dump(cruises, f, indent=2)
