@@ -6,6 +6,8 @@ import royal_caribbean.rc as rc
 import princess.princess as princess
 import azamara.azamara as azamara
 import celebrity.celebrity as celebrity
+import hollandamerica.hollandamerica as hollandamerica
+import cunard.cunard as cunard
 import json
 import os
 from datetime import datetime
@@ -49,35 +51,37 @@ def get_celebrity():
     print(f"[!] Found {len(cruises)} cruises")
     return cruises
 
+def get_hollandamerica():
+    print("[!] Getting Holland America")
+    cruises = hollandamerica.get_cruises()
+    print(f"[!] Found {len(cruises)} cruises")
+    return cruises
+
+def get_cunard():
+    print("[!] Getting Cunard")
+    cruises = cunard.fetch_all_cruises()
+    print(f"[!] Found {len(cruises)} cruises")
+    return cruises
+
 if __name__ == '__main__':
     print("[!] Starting to scrape cruises")
-    cruises = []
+    cruise_functions = [
+        get_rc(),
+        get_pando(),
+        get_carnival(),
+        get_princess(),
+        # get_azamara(),
+        get_celebrity(),
+        get_hollandamerica(),
+        get_cunard()
+    ]
 
-    royal_caribbean = get_rc()
-    po_cruises = get_pando()
-    carnival_cruises = get_carnival()
-    princess_cruises = get_princess()
-    # azamara_cruises = get_azamara()
-    celebrity_cruises = get_celebrity()
-    
-    for i in royal_caribbean:
-        if i['price'] > 0:
-            cruises.append(i)
-    for i in po_cruises:
-        if i['price'] > 0:
-            cruises.append(i)
-    for i in carnival_cruises:
-        if i['price'] > 0:
-            cruises.append(i)
-    for i in princess_cruises:
-        if i['price'] > 0:
-            cruises.append(i)
-    # for i in azamara_cruises:
-    #    if i['price'] > 0:
-    #        cruises.append(i)
-    for i in celebrity_cruises:
-        if i['price'] > 0:
-            cruises.append(i)
+    cruises = []
+    for cruise_line in cruise_functions:
+        for cruise in cruise_line:
+            if cruise['price'] > 0:
+                cruises.append(cruise)
+
 
     cruises.sort(key=lambda cruise: cruise["price_per_night"], reverse=False)
     date = datetime.now().strftime("%Y_%m_%d")
