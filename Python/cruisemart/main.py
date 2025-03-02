@@ -262,7 +262,7 @@ def display_cruise_results(cruise_list):
     
     # And save it as a JSON file
     with open(f"{DIR}/cruises.json", "w") as f:
-        f.write(f"[{cruise['name']}] ({cruise['code']} - {cruise['nights']} nights) = ${cruise['price']}{cruise['currency']} (${cruise['ppn']}) for {cruise['cabin']} -------- {cruise['dep_date']}\n")
+        json.dump(sorted_cruises, f, indent=2)
 
     print(f"\nTotal cruises processed: {len(cruise_list)}")
 
