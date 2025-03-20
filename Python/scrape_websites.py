@@ -1,12 +1,16 @@
 #!/bin/python3
 
 import carnival.carnival as carnival
-import pando.pando as pando
+
+# P&O is redundant, it has been merged with Carnival
+#import pando.pando as pando
+
 import royal_caribbean.rc as rc
 import princess.princess as princess
 import azamara.azamara as azamara
 import celebrity.celebrity as celebrity
 import hollandamerica.hollandamerica as hollandamerica
+import ncl.ncl as ncl
 import cunard.cunard as cunard
 import json
 import os
@@ -27,11 +31,12 @@ def get_carnival():
     print(f"[!] Found {len(cruises)} cruises")
     return cruises
 
-def get_pando():
-    print("[!] Getting P&O")
-    cruises = pando.get_cruises("https://api.pocruises.com.au/cruiseresults/search")
-    print(f"[!] Found {len(cruises)} cruises")
-    return cruises
+# No longer exists. Kept for posterity
+#def get_pando():
+#    print("[!] Getting P&O")
+#    cruises = pando.get_cruises("https://api.pocruises.com.au/cruiseresults/search")
+#    print(f"[!] Found {len(cruises)} cruises")
+#    return cruises
 
 def get_princess():
     print("[!] Getting Princess")
@@ -63,17 +68,24 @@ def get_cunard():
     print(f"[!] Found {len(cruises)} cruises")
     return cruises
 
+def get_ncl():
+    print("[!] Getting Norweigan")
+    cruises = ncl.fetch_all_cruises()
+    print(f"[!] Found {len(cruises)} cruises")
+    return cruises
+
 if __name__ == '__main__':
     print("[!] Starting to scrape cruises")
     cruise_functions = [
         get_rc(),
-        get_pando(),
+        # get_pando(), Doesn't exist anymore
         get_carnival(),
         get_princess(),
-        # get_azamara(),
+        get_azamara(),
         get_celebrity(),
         get_hollandamerica(),
-        get_cunard()
+        get_cunard(),
+        get_ncl()
     ]
 
     cruises = []
