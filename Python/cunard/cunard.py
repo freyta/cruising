@@ -19,7 +19,7 @@ def fetch_all_cruises():
     scraped_cruises = []
 
     headers = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:135.0) Gecko/20100101 Firefox/135.0',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:145.0) Gecko/20100101 Firefox/145.0',
     'Accept': 'application/json',
     'Accept-Language': 'en-US,en;q=0.5',
     'Referer': 'https://www.cunard.com/',
@@ -32,6 +32,7 @@ def fetch_all_cruises():
 }
     
     promo_json = requests.get("https://www.cunard.com/en-au/promos.promosDetails.json", headers=headers).json()
+    
 
     while True:
         data = requests.get(f"https://www.cunard.com/search/cunard_en_AU/cruisesearch?&fq=(soldOut:(false) AND price_AUD_anonymous:[1 TO *] AND embargoDateTime:[1999-12-01T00:00:00Z TO NOW])&start={count}&rows=99&",headers=headers).json()
